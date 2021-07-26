@@ -44,4 +44,10 @@ public class Demo : MonoBehaviour
     {
         EventLog.Error(inputField.text);
     }
+
+    // Add notification
+    public void Notification(InputField inputField)
+    {
+        EventLog.Notification(inputField.text);
+    }
 }

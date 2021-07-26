@@ -56,7 +56,7 @@ namespace EventLogListView
         }
 
         // data detach
-        private void Detach()
+        public void Detach()
         {
             if (logData != null)
             {

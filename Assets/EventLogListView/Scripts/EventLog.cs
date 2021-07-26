@@ -48,6 +48,15 @@ namespace EventLogListView
             scrollRect = obj.GetComponentInChildren<ScrollRect>();
         }
 
+        protected void OnDestroy()
+        {
+            Debug.Log("OnDestroy");
+            foreach (Transform t in scrollRect.content)
+            {
+                t.GetComponent<EventLogItem>()?.Detach();
+            }
+        }
+
         // Update is called once per frame
         void Update()
         {
