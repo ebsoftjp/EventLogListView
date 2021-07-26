@@ -9,7 +9,6 @@ public class Demo : MonoBehaviour
     void Start()
     {
         EventLog.Add("Start");
-        EventLog.Error("Error");
     }
 
     // Update is called once per frame
@@ -24,11 +23,25 @@ public class Demo : MonoBehaviour
         EventLog.Add(inputField.text);
     }
 
-    // Add
+    // Add loading
     public async void AddLoading(Slider slider)
     {
         var eventLog = EventLog.AddLoading("Loading...");
         await Task.Delay((int)(slider.value * 1000));
-        eventLog.Done();
+        eventLog.Done("Success");
+    }
+
+    // Add loading error
+    public async void AddLoadingError(Slider slider)
+    {
+        var eventLog = EventLog.AddLoading("Loading...");
+        await Task.Delay((int)(slider.value * 1000));
+        eventLog.Failed("Failed");
+    }
+
+    // Add error
+    public void Error(InputField inputField)
+    {
+        EventLog.Error(inputField.text);
     }
 }
