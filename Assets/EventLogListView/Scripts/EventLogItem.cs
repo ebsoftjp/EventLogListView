@@ -29,7 +29,15 @@ namespace EventLogListView
         public void UpdateContent()
         {
             text.text = logData.message;
-            animator.SetInteger("Status", (int)logData.status);
+            if (logData.status == EventLogStatus.Loading)
+            {
+                animator.SetBool("Loading", true);
+            }
+            else
+            {
+                animator.SetTrigger("IconDone");
+                animator.SetTrigger("Disappear");
+            }
 
             // calculate text size
             contentSizeFitter.SetLayoutVertical();
