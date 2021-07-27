@@ -95,18 +95,6 @@ namespace EventLogListView
             }
             var item = obj.GetComponent<ItemView>();
             item.animator.updateMode = data.updateMode;
-            var viewType = data.Get(logData.done ? logData.typeKey : "Loading");
-            if (viewType != null)
-            {
-                item.text.color = viewType.color;
-                item.icon.enabled = viewType.sprite != null;
-                item.icon.sprite = viewType.sprite;
-            }
-            else
-            {
-                item.text.color = Color.white;
-                item.icon.sprite = null;
-            }
             item.Init(logData);
             item.UpdateContent();
         }

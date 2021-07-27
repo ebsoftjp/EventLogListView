@@ -14,23 +14,36 @@ namespace EventLogListView
         public RectTransform textRectTransform;
         public ContentSizeFitter contentSizeFitter;
         public float offsetHeight = 10;
-        public ItemData logData;
+        public ItemData itemData;
 
         // init
-        public void Init(ItemData newLogData)
+        public void Init(ItemData newItemData)
         {
             Detach();
 
             // data attach
-            logData = newLogData;
-            logData.item = this;
+            itemData = newItemData;
+            itemData.item = this;
         }
 
         // update
         public void UpdateContent()
         {
-            text.text = logData.message;
-            if (logData.done || logData.error)
+            var viewType = itemData.GetViewType();
+            if (viewType != null)
+            {
+                text.color = viewType.color;
+                icon.enabled = viewType.sprite != null;
+                icon.sprite = viewType.sprite;
+            }
+            else
+            {
+                text.color = Color.white;
+                icon.sprite = null;
+            }
+
+            text.text = itemData.message;
+            if (itemData.done || itemData.error)
             {
                 animator.SetTrigger("IconDone");
                 animator.SetTrigger("Disappear");
@@ -68,9 +81,9 @@ namespace EventLogListView
         // data detach
         public void Detach()
         {
-            if (logData != null)
+            if (itemData != null)
             {
-                logData.item = null;
+                itemData.item = null;
             }
         }
     }

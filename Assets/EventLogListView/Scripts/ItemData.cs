@@ -24,6 +24,14 @@ namespace EventLogListView
         }
 
         // loading complete
+        public ViewType GetViewType()
+        {
+            if (done) return data.Get(typeKey);
+            if (error) return data.Get("Error");
+            return data.Get("Loading");
+        }
+
+        // loading complete
         public void Done()
         {
             done = true;
