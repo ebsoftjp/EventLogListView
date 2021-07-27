@@ -36,7 +36,7 @@ public class Demo : MonoBehaviour
     {
         var eventLog = EventLog.AddLoading("Loading...");
         await Task.Delay((int)(slider.value * 1000));
-        eventLog.Failed("Failed");
+        eventLog.Failed("Failed: error message here");
     }
 
     // Add error
