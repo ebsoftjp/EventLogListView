@@ -6,6 +6,7 @@ namespace EventLogListView
     [CreateAssetMenu(menuName = "EventLogListView/EventLogData", fileName = "EventLogData")]
     public class EventLogData : ScriptableObject
     {
+        public float itemLimit = 32;
         public float offsetHeight = 10;
         public ViewType[] list;
 

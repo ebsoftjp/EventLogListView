@@ -77,7 +77,14 @@ namespace EventLogListView
                 : null;
             if (obj != null && obj.activeSelf)
             {
-                obj = null;
+                if (scrollRect.content.childCount < data.itemLimit)
+                {
+                    obj = null;
+                }
+                else
+                {
+                    obj.SetActive(false);
+                }
             }
             if (obj != null)
             {
