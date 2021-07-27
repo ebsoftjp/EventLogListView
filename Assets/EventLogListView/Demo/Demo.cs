@@ -42,6 +42,12 @@ public class Demo : MonoBehaviour
         eventLog.Failed("Failed: error message here");
     }
 
+    // Add done
+    public void Done(InputField inputField)
+    {
+        EventLog.Success(inputField.text);
+    }
+
     // Add error
     public void Error(InputField inputField)
     {

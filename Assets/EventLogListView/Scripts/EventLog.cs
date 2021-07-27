@@ -124,7 +124,7 @@ namespace EventLogListView
             if (Instance.data.enableDebugLog) Debug.Log(message);
         }
 
-        // add error
+        // add success
         public static void Success(string message)
         {
             Instance.AddEventLog(new ItemData(Instance.data, message, "Done"));
