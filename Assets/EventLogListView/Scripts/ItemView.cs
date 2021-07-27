@@ -57,11 +57,12 @@ namespace EventLogListView
             layoutGroup.enabled = true;
         }
 
-        // call from animation 'EventLogRemove'
+        // call from animation 'EventLogDisappear'
         public void DestroySelf()
         {
-            GetComponentInParent<EventLog>().ReleaseEventLog(gameObject);
             Detach();
+            gameObject.SetActive(false);
+            transform.SetAsFirstSibling();
         }
 
         // data detach

@@ -71,9 +71,24 @@ namespace EventLogListView
             var logData = reserved[0];
             reserved.RemoveAt(0);
 
-            var prefab = Resources.Load<GameObject>("Prefabs/EventLogItem");
-            // pool.get();
-            var obj = Instantiate(prefab, scrollRect.content);
+            Debug.Log(scrollRect.content.childCount);
+            var obj = scrollRect.content.childCount > 0
+                ? scrollRect.content.GetChild(0).gameObject
+                : null;
+            if (obj != null && obj.activeSelf)
+            {
+                obj = null;
+            }
+            if (obj != null)
+            {
+                obj.SetActive(true);
+                obj.transform.SetAsLastSibling();
+            }
+            else
+            {
+                var prefab = Resources.Load<GameObject>("Prefabs/EventLogItem");
+                obj = Instantiate(prefab, scrollRect.content);
+            }
             var item = obj.GetComponent<ItemView>();
             var viewType = data.Get(logData.done ? logData.typeKey : "Loading");
             if (viewType != null)
@@ -132,13 +147,6 @@ namespace EventLogListView
             Instance.AddEventLog(e);
             Debug.Log(message);
             return e;
-        }
-
-        // release event
-        public void ReleaseEventLog(GameObject obj)
-        {
-            // pool.Release(obj);
-            Destroy(obj);
         }
     }
 }
