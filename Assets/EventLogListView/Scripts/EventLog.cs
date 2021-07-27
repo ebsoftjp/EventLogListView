@@ -61,7 +61,7 @@ namespace EventLogListView
         // Update is called once per frame
         void Update()
         {
-            if (reserved.Count == 0)
+            if (reserved.Count == 0 || (Time.timeScale == 0 && data.updateMode != AnimatorUpdateMode.UnscaledTime))
             {
                 return;
             }
@@ -94,6 +94,7 @@ namespace EventLogListView
                 obj = Instantiate(prefab, scrollRect.content);
             }
             var item = obj.GetComponent<ItemView>();
+            item.animator.updateMode = data.updateMode;
             var viewType = data.Get(logData.done ? logData.typeKey : "Loading");
             if (viewType != null)
             {

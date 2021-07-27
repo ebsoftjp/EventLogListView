@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a59ae54e0ab9b404f8dca329ebbf8fbf, type: 3}
   m_Name: EventLogData
   m_EditorClassIdentifier: Assembly-CSharp:EventLogListView:EventLogData2
+  enableDebugLog: 1
+  updateMode: 0
   itemLimit: 32
   offsetHeight: 10
   list:
