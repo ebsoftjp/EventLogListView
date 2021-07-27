@@ -5,6 +5,9 @@ using EventLogListView;
 
 public class Demo : MonoBehaviour
 {
+    public Transform cubeTransform;
+    public Vector3 cubeSpeed = new Vector3(5, 89, 23);
+
     // Start is called before the first frame update
     void Start()
     {
@@ -14,7 +17,7 @@ public class Demo : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        cubeTransform.rotation = Quaternion.Euler(cubeSpeed * Time.time);
     }
 
     // Add
@@ -49,5 +52,11 @@ public class Demo : MonoBehaviour
     public void Notification(InputField inputField)
     {
         EventLog.Notification(inputField.text);
+    }
+
+    // Pause
+    public void Pause()
+    {
+        Time.timeScale = Time.timeScale > 0 ? 0 : 1;
     }
 }
