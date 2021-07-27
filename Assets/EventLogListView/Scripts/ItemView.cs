@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace EventLogListView
 {
-    public class EventLogItem : MonoBehaviour
+    public class ItemView : MonoBehaviour
     {
         public RectTransform rectTransform;
         public Animator animator;
@@ -14,10 +14,10 @@ namespace EventLogListView
         public RectTransform textRectTransform;
         public ContentSizeFitter contentSizeFitter;
         public float offsetHeight = 10;
-        public EventLogData logData;
+        public ItemData logData;
 
         // init
-        public void Init(EventLogData newLogData)
+        public void Init(ItemData newLogData)
         {
             Detach();
 

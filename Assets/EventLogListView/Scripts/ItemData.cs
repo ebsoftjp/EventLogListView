@@ -5,15 +5,15 @@ using UnityEngine.UI;
 
 namespace EventLogListView
 {
-    public class EventLogData
+    public class ItemData
     {
-        public EventLogItem item;
+        public ItemView item;
         public string message;
         public string typeKey;
         public bool done;
         public bool error;
 
-        public EventLogData(string message, string typeKey, bool done = true)
+        public ItemData(string message, string typeKey, bool done = true)
         {
             this.message = message;
             this.typeKey = typeKey;
