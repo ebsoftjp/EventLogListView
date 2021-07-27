@@ -9,18 +9,22 @@ namespace EventLogListView
     {
         public EventLogItem item;
         public string message;
-        public EventLogStatus status = EventLogStatus.None;
+        public string typeKey;
+        public bool done;
+        public bool error;
 
-        public EventLogData(string message, EventLogStatus status = EventLogStatus.None)
+        public EventLogData(string message, string typeKey, bool done = true)
         {
             this.message = message;
-            this.status = status;
+            this.typeKey = typeKey;
+            this.done = done;
+            error = false;
         }
 
         // loading complete
         public void Done()
         {
-            status = EventLogStatus.Done;
+            done = true;
             item?.UpdateContent();
         }
 
@@ -29,7 +33,7 @@ namespace EventLogListView
         {
             message += appendMessage;
             Debug.Log(message);
-            status = EventLogStatus.Done;
+            done = true;
             item?.UpdateContent();
             item?.UpdateLayout();
         }
@@ -51,7 +55,7 @@ namespace EventLogListView
         // loading complete with error
         public void Failed()
         {
-            status = EventLogStatus.Failed;
+            error = true;
             item?.UpdateContent();
         }
 
@@ -66,7 +70,7 @@ namespace EventLogListView
         {
             message += appendMessage;
             Debug.LogError(message);
-            status = EventLogStatus.Failed;
+            error = true;
             item?.UpdateContent();
             item?.UpdateLayout();
         }

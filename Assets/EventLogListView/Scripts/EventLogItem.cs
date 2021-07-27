@@ -10,6 +10,7 @@ namespace EventLogListView
         public RectTransform rectTransform;
         public Animator animator;
         public Text text;
+        public Image icon;
         public RectTransform textRectTransform;
         public ContentSizeFitter contentSizeFitter;
         public float offsetHeight = 10;
@@ -29,14 +30,14 @@ namespace EventLogListView
         public void UpdateContent()
         {
             text.text = logData.message;
-            if (logData.status == EventLogStatus.Loading)
-            {
-                animator.SetBool("Loading", true);
-            }
-            else
+            if (logData.done || logData.error)
             {
                 animator.SetTrigger("IconDone");
                 animator.SetTrigger("Disappear");
+            }
+            else
+            {
+                animator.SetBool("Loading", true);
             }
 
             // calculate text size

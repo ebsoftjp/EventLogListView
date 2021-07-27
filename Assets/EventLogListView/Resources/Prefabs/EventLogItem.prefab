@@ -237,6 +237,7 @@ MonoBehaviour:
   rectTransform: {fileID: 8546054923902849956}
   animator: {fileID: 3397265507608436851}
   text: {fileID: 8546054925328669719}
+  icon: {fileID: 3193722769437582123}
   textRectTransform: {fileID: 8546054925328669716}
   contentSizeFitter: {fileID: 2431400875004628169}
   offsetHeight: 20

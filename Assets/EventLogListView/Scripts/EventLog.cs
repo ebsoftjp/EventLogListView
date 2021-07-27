@@ -38,6 +38,7 @@ namespace EventLogListView
 
         private Font defalutFont;
         private List<EventLogData> reserved = new List<EventLogData>();
+        private Dictionary<string, EventLogType> types = new Dictionary<string, EventLogType>();
         private ScrollRect scrollRect;
 
         protected void OnInit()
@@ -46,6 +47,23 @@ namespace EventLogListView
             var obj = Instantiate(prefab);
             obj.transform.SetParent(transform);
             scrollRect = obj.GetComponentInChildren<ScrollRect>();
+
+            types["Loading"] = new EventLogType() {
+                color = Color.gray,
+                texture = Resources.Load<Sprite>("Textures/ButtonLoading"),
+            };
+            types["Done"] = new EventLogType() {
+                color = Color.white,
+                texture = Resources.Load<Sprite>("Textures/ButtonDone"),
+            };
+            types["Error"] = new EventLogType() {
+                color = Color.red,
+                texture = Resources.Load<Sprite>("Textures/ButtonFailed"),
+            };
+            types["Notification"] = new EventLogType() {
+                color = Color.cyan,
+                texture = Resources.Load<Sprite>("Textures/ButtonNotification"),
+            };
         }
 
         protected void OnDestroy()
@@ -72,6 +90,9 @@ namespace EventLogListView
             // pool.get();
             var obj = Instantiate(prefab, scrollRect.content);
             var item = obj.GetComponent<EventLogItem>();
+            var key = logData.done ? logData.typeKey : "Loading";
+            item.text.color = types[key].color;
+            item.icon.sprite = types[key].texture;
             item.Init(logData);
             item.UpdateContent();
         }
@@ -85,35 +106,35 @@ namespace EventLogListView
         // add
         public static void Add(string message)
         {
-            Instance.AddEventLog(new EventLogData(message));
+            Instance.AddEventLog(new EventLogData(message, "Done"));
             Debug.Log(message);
         }
 
         // add error
         public static void Success(string message)
         {
-            Instance.AddEventLog(new EventLogData(message, EventLogStatus.Done));
+            Instance.AddEventLog(new EventLogData(message, "Done"));
             Debug.Log(message);
         }
 
         // add error
         public static void Error(string message)
         {
-            Instance.AddEventLog(new EventLogData(message, EventLogStatus.Failed));
+            Instance.AddEventLog(new EventLogData(message, "Error"));
             Debug.LogError(message);
         }
 
         // add notification
         public static void Notification(string message)
         {
-            Instance.AddEventLog(new EventLogData(message, EventLogStatus.Notification));
+            Instance.AddEventLog(new EventLogData(message, "Notification"));
             Debug.Log(message);
         }
 
         // add loading event
         public static EventLogData AddLoading(string message)
         {
-            var e = new EventLogData(message, EventLogStatus.Loading);
+            var e = new EventLogData(message, "Done", false);
             Instance.AddEventLog(e);
             Debug.Log(message);
             return e;
