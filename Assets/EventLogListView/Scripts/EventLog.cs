@@ -32,7 +32,6 @@ namespace EventLogListView
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         public static void OnLoad()
         {
-            Debug.Log("OnLoad");
             _ = EventLog.Instance;
         }
 
@@ -53,7 +52,6 @@ namespace EventLogListView
 
         protected void OnDestroy()
         {
-            Debug.Log("OnDestroy");
             foreach (Transform t in scrollRect.content)
             {
                 t.GetComponent<ItemView>()?.Detach();
@@ -71,7 +69,6 @@ namespace EventLogListView
             var logData = reserved[0];
             reserved.RemoveAt(0);
 
-            Debug.Log(scrollRect.content.childCount);
             var obj = scrollRect.content.childCount > 0
                 ? scrollRect.content.GetChild(0).gameObject
                 : null;
@@ -122,37 +119,37 @@ namespace EventLogListView
         // add
         public static void Add(string message)
         {
-            Instance.AddEventLog(new ItemData(message, "Default"));
-            Debug.Log(message);
+            Instance.AddEventLog(new ItemData(Instance.data, message, "Default"));
+            if (Instance.data.enableDebugLog) Debug.Log(message);
         }
 
         // add error
         public static void Success(string message)
         {
-            Instance.AddEventLog(new ItemData(message, "Done"));
-            Debug.Log(message);
+            Instance.AddEventLog(new ItemData(Instance.data, message, "Done"));
+            if (Instance.data.enableDebugLog) Debug.Log(message);
         }
 
         // add error
         public static void Error(string message)
         {
-            Instance.AddEventLog(new ItemData(message, "Error"));
-            Debug.LogError(message);
+            Instance.AddEventLog(new ItemData(Instance.data, message, "Error"));
+            if (Instance.data.enableDebugLog) Debug.LogError(message);
         }
 
         // add notification
         public static void Notification(string message)
         {
-            Instance.AddEventLog(new ItemData(message, "Notification"));
-            Debug.Log(message);
+            Instance.AddEventLog(new ItemData(Instance.data, message, "Notification"));
+            if (Instance.data.enableDebugLog) Debug.Log(message);
         }
 
         // add loading event
         public static ItemData AddLoading(string message)
         {
-            var e = new ItemData(message, "Done", false);
+            var e = new ItemData(Instance.data, message, "Done", false);
             Instance.AddEventLog(e);
-            Debug.Log(message);
+            if (Instance.data.enableDebugLog) Debug.Log(message);
             return e;
         }
     }

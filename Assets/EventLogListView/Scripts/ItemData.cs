@@ -7,14 +7,16 @@ namespace EventLogListView
 {
     public class ItemData
     {
+        private EventLogData data;
         public ItemView item;
         public string message;
         public string typeKey;
         public bool done;
         public bool error;
 
-        public ItemData(string message, string typeKey, bool done = true)
+        public ItemData(EventLogData data, string message, string typeKey, bool done = true)
         {
+            this.data = data;
             this.message = message;
             this.typeKey = typeKey;
             this.done = done;
@@ -32,7 +34,7 @@ namespace EventLogListView
         public void Done(string appendMessage)
         {
             message += appendMessage;
-            Debug.Log(message);
+            if (data.enableDebugLog) Debug.Log(message);
             done = true;
             item?.UpdateContent();
             item?.UpdateLayout();
@@ -69,7 +71,7 @@ namespace EventLogListView
         public void Failed(string appendMessage)
         {
             message += appendMessage;
-            Debug.LogError(message);
+            if (data.enableDebugLog) Debug.LogError(message);
             error = true;
             item?.UpdateContent();
             item?.UpdateLayout();
