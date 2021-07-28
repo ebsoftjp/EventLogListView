@@ -9,6 +9,9 @@ namespace EventLogListView
     public class EventLog : MonoBehaviour
     {
         private static EventLog _Instance = null;
+        private static readonly string dataPath = "EventLogListView/EventLogData";
+        private static readonly string canvasPath = "EventLogListView/Prefabs/EventLogCanvas";
+        private static readonly string itemPath = "EventLogListView/Prefabs/EventLogItem";
 
         /// <summary>
         /// Initialize singleton.
@@ -47,9 +50,9 @@ namespace EventLogListView
         /// </summary>
         private void OnCreateInstance()
         {
-            data = Resources.Load<EventLogData>("EventLogData");
+            data = Resources.Load<EventLogData>(dataPath);
 
-            var prefab = Resources.Load<GameObject>("Prefabs/EventLogCanvas");
+            var prefab = Resources.Load<GameObject>(canvasPath);
             var obj = Instantiate(prefab, transform);
             scrollRect = obj.GetComponentInChildren<ScrollRect>();
         }
@@ -101,7 +104,7 @@ namespace EventLogListView
             else
             {
                 // create a new object
-                var prefab = Resources.Load<GameObject>("Prefabs/EventLogItem");
+                var prefab = Resources.Load<GameObject>(itemPath);
                 obj = Instantiate(prefab, scrollRect.content);
             }
 
