@@ -58,11 +58,27 @@ namespace EventLogListView
         }
 
         /// <summary>
-        /// Add notification.
+        /// Add custom 1.
         /// </summary>
-        public void Notification(InputField inputField)
+        public void Custom1(InputField inputField)
         {
-            EventLog.Add(inputField.text, "Notification");
+            EventLog.Add(inputField.text, "Custom1");
+        }
+
+        /// <summary>
+        /// Add custom 2.
+        /// </summary>
+        public void Custom2(InputField inputField)
+        {
+            EventLog.Add(inputField.text, "Custom2");
+        }
+
+        /// <summary>
+        /// Add custom 3.
+        /// </summary>
+        public void Custom3(InputField inputField)
+        {
+            EventLog.Add(inputField.text, "Custom3");
         }
 
         /// <summary>
