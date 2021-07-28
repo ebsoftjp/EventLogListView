@@ -9,7 +9,6 @@ namespace EventLogListView
         public bool enableDebugLog = true;
         public AnimatorUpdateMode updateMode = AnimatorUpdateMode.UnscaledTime;
         public float itemLimit = 32;
-        public float offsetHeight = 10;
         public ViewType[] list;
 
         public ViewType Get(string key)

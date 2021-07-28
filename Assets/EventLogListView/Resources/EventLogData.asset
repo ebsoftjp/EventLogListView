@@ -15,7 +15,6 @@ MonoBehaviour:
   enableDebugLog: 1
   updateMode: 2
   itemLimit: 32
-  offsetHeight: 10
   list:
   - name: Default
     color: {r: 1, g: 1, b: 1, a: 1}

@@ -13,8 +13,14 @@ namespace EventLogListView
         public Image icon;
         public RectTransform textRectTransform;
         public ContentSizeFitter contentSizeFitter;
-        public float offsetHeight = 10;
-        public ItemData itemData;
+
+        private ItemData itemData;
+        private float offsetHeight;
+
+        void Awake()
+        {
+            offsetHeight = rectTransform.sizeDelta.y - text.fontSize;
+        }
 
         // init
         public void Init(ItemData newItemData)
