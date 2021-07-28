@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: EventLogData
   m_EditorClassIdentifier: Assembly-CSharp:EventLogListView:EventLogData2
   enableDebugLog: 1
-  updateMode: 0
+  updateMode: 2
   itemLimit: 32
   offsetHeight: 10
   list:

@@ -7,7 +7,7 @@ namespace EventLogListView
     public class EventLogData : ScriptableObject
     {
         public bool enableDebugLog = true;
-        public AnimatorUpdateMode updateMode = AnimatorUpdateMode.Normal;
+        public AnimatorUpdateMode updateMode = AnimatorUpdateMode.UnscaledTime;
         public float itemLimit = 32;
         public float offsetHeight = 10;
         public ViewType[] list;
