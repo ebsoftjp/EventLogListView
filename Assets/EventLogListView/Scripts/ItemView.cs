@@ -62,14 +62,14 @@ namespace EventLogListView
             }
 
             // animator parameter
-            if (itemData.done || itemData.error)
+            if (itemData.IsLoading)
             {
-                animator.SetTrigger("IconDone");
-                animator.SetTrigger("Disappear");
+                animator.SetBool("Loading", true);
             }
             else
             {
-                animator.SetBool("Loading", true);
+                animator.SetTrigger("IconDone");
+                animator.SetTrigger("Disappear");
             }
 
             // calculate text size

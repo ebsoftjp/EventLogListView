@@ -15,6 +15,10 @@ MonoBehaviour:
   enableDebugLog: 1
   updateMode: 2
   itemLimit: 32
+  defaultKey: Default
+  doneKey: Done
+  errorKey: Error
+  loadingKey: Loading
   list:
   - key: Default
     color: {r: 1, g: 1, b: 1, a: 1}

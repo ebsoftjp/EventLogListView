@@ -9,6 +9,14 @@ namespace EventLogListView
         public bool enableDebugLog = true;
         public AnimatorUpdateMode updateMode = AnimatorUpdateMode.UnscaledTime;
         public float itemLimit = 32;
+
+        [SerializeField, HeaderAttribute("Keys")]
+        public string defaultKey = "Default";
+        public string doneKey = "Done";
+        public string errorKey = "Error";
+        public string loadingKey = "Loading";
+
+        [SerializeField, HeaderAttribute("View type list")]
         public ViewType[] list;
 
         /// <summary>

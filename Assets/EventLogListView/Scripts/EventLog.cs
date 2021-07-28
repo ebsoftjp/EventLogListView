@@ -115,9 +115,13 @@ namespace EventLogListView
         /// <summary>
         /// Add event log.
         /// </summary>
-        private ItemData AddEventLog(string message, string key, bool done)
+        private ItemData AddEventLog(string message, string key)
         {
-            var e = new ItemData(data, message, key, done);
+            if (key == "")
+            {
+                key = data.defaultKey;
+            }
+            var e = new ItemData(data, message, key);
             reservedItems.Add(e);
             e.DebugLog();
             return e;
@@ -126,9 +130,9 @@ namespace EventLogListView
         /// <summary>
         /// Add normal event log.
         /// </summary>
-        public static void Add(string message, string key = "Default")
+        public static void Add(string message, string key = "")
         {
-            _ = Instance.AddEventLog(message, key, true);
+            _ = Instance.AddEventLog(message, key);
         }
 
         /// <summary>
@@ -136,7 +140,7 @@ namespace EventLogListView
         /// </summary>
         public static void AddDone(string message)
         {
-            EventLog.Add(message, "Done");
+            EventLog.Add(message, Instance.data.doneKey);
         }
 
         /// <summary>
@@ -144,7 +148,7 @@ namespace EventLogListView
         /// </summary>
         public static void AddError(string message)
         {
-            EventLog.Add(message, "Error");
+            EventLog.Add(message, Instance.data.errorKey);
         }
 
         /// <summary>
@@ -152,7 +156,7 @@ namespace EventLogListView
         /// </summary>
         public static ItemData AddLoading(string message)
         {
-            return Instance.AddEventLog(message, "Loading", false);
+            return Instance.AddEventLog(message, Instance.data.loadingKey);
         }
     }
 }

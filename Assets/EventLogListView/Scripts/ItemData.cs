@@ -7,23 +7,27 @@ namespace EventLogListView
 {
     public class ItemData
     {
-        private EventLogData data;
         public ItemView item;
         public string message;
-        public string key;
-        public bool done;
-        public bool error;
+
+        private EventLogData data;
+        private string key;
+
+        /// <summary>
+        /// Check loading.
+        /// </summary>
+        public bool IsLoading {
+            get { return key == data.loadingKey; }
+        }
 
         /// <summary>
         /// Constructor.
         /// </summary>
-        public ItemData(EventLogData data, string message, string key, bool done = true)
+        public ItemData(EventLogData data, string message, string key)
         {
             this.data = data;
             this.message = message;
             this.key = key;
-            this.done = done;
-            error = key == "Error";
         }
 
         /// <summary>
@@ -31,9 +35,7 @@ namespace EventLogListView
         /// </summary>
         public EventLogData.ViewType GetViewType()
         {
-            if (done) return data.Get(key);
-            if (error) return data.Get("Error");
-            return data.Get("Loading");
+            return data.Get(key);
         }
 
         /// <summary>
@@ -43,7 +45,7 @@ namespace EventLogListView
         {
             if (data.enableDebugLog)
             {
-                if (error)
+                if (key == data.errorKey)
                 {
                     Debug.LogError(message);
                 }
@@ -57,13 +59,21 @@ namespace EventLogListView
         /// <summary>
         /// Loading complete and add message.
         /// </summary>
-        public void Done(string appendMessage = "")
+        private void UpdateItem(string appendMessage = "")
         {
             message += appendMessage;
             DebugLog();
-            done = true;
             item?.UpdateContent();
             item?.UpdateLayout();
+        }
+
+        /// <summary>
+        /// Loading complete and add message.
+        /// </summary>
+        public void Done(string appendMessage = "")
+        {
+            key = data.doneKey;
+            UpdateItem(appendMessage);
         }
 
         /// <summary>
@@ -88,8 +98,8 @@ namespace EventLogListView
         /// </summary>
         public void Error(string appendMessage = "")
         {
-            error = true;
-            Done(appendMessage);
+            key = data.errorKey;
+            UpdateItem(appendMessage);
         }
     }
 }
