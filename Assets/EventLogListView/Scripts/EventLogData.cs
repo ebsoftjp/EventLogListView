@@ -11,17 +11,20 @@ namespace EventLogListView
         public float itemLimit = 32;
         public ViewType[] list;
 
+        /// <summary>
+        /// Get ViewType from key string.
+        /// </summary>
         public ViewType Get(string key)
         {
-            return list.FirstOrDefault((v) => v.name == key);
+            return list.FirstOrDefault((v) => v.key == key);
         }
-    }
 
-    [System.Serializable]
-    public class ViewType
-    {
-        public string name = "";
-        public Color color = Color.white;
-        public Sprite sprite = null;
+        [System.Serializable]
+        public class ViewType
+        {
+            public string key = "";
+            public Color color = Color.white;
+            public Sprite sprite = null;
+        }
     }
 }

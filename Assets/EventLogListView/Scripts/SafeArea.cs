@@ -7,19 +7,24 @@ namespace EventLogListView
 		RectTransform panel;
 		Rect lastSafeArea = Rect.zero;
 
-		// Use this for initialization
+        /// <summary>
+        /// Use this for initialization.
+        /// </summary>
 		void Start()
 		{
 			panel = GetComponent<RectTransform>();
 		}
 
-		// Update is called once per frame
+        /// <summary>
+        /// Update is called once per frame.
+        /// </summary>
 		void Update()
 		{
 			var area = Screen.safeArea;
 
 			if (area != lastSafeArea)
 			{
+				// fit object size to safe area
 				var anchorMin = area.position;
 				var anchorMax = area.position + area.size;
 				anchorMin.x /= Screen.width;

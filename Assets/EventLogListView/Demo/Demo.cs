@@ -1,68 +1,88 @@
 ﻿using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
-using EventLogListView;
 
-public class Demo : MonoBehaviour
+namespace EventLogListView
 {
-    public Transform cubeTransform;
-    public Vector3 cubeSpeed = new Vector3(5, 89, 23);
-
-    // Start is called before the first frame update
-    void Start()
+    public class Demo : MonoBehaviour
     {
-        EventLog.Add("Start");
-    }
+        public Transform cubeTransform;
+        public Vector3 cubeSpeed = new Vector3(5, 89, 23);
 
-    // Update is called once per frame
-    void Update()
-    {
-        cubeTransform.rotation = Quaternion.Euler(cubeSpeed * Time.time);
-    }
+        /// <summary>
+        /// Start is called before the first frame update.
+        /// </summary>
+        void Start()
+        {
+            EventLog.Add("Start");
+        }
 
-    // Add
-    public void Add(InputField inputField)
-    {
-        EventLog.Add(inputField.text);
-    }
+        /// <summary>
+        /// Update is called once per frame.
+        /// </summary>
+        void Update()
+        {
+            cubeTransform.rotation = Quaternion.Euler(cubeSpeed * Time.time);
+        }
 
-    // Add loading
-    public async void AddLoading(Slider slider)
-    {
-        var eventLog = EventLog.AddLoading("Loading...");
-        await Task.Delay((int)(slider.value * 1000));
-        eventLog.Done("Success");
-    }
+        /// <summary>
+        /// Pause.
+        /// </summary>
+        public void Pause()
+        {
+            Time.timeScale = Time.timeScale > 0 ? 0 : 1;
+        }
 
-    // Add loading error
-    public async void AddLoadingError(Slider slider)
-    {
-        var eventLog = EventLog.AddLoading("Loading...");
-        await Task.Delay((int)(slider.value * 1000));
-        eventLog.Failed("Failed: error message here");
-    }
+        /// <summary>
+        /// Add normal event.
+        /// </summary>
+        public void Add(InputField inputField)
+        {
+            EventLog.Add(inputField.text);
+        }
 
-    // Add done
-    public void Done(InputField inputField)
-    {
-        EventLog.Success(inputField.text);
-    }
+        /// <summary>
+        /// Add done.
+        /// </summary>
+        public void Done(InputField inputField)
+        {
+            EventLog.AddDone(inputField.text);
+        }
 
-    // Add error
-    public void Error(InputField inputField)
-    {
-        EventLog.Error(inputField.text);
-    }
+        /// <summary>
+        /// Add error.
+        /// </summary>
+        public void Error(InputField inputField)
+        {
+            EventLog.AddError(inputField.text);
+        }
 
-    // Add notification
-    public void Notification(InputField inputField)
-    {
-        EventLog.Notification(inputField.text);
-    }
+        /// <summary>
+        /// Add notification.
+        /// </summary>
+        public void Notification(InputField inputField)
+        {
+            EventLog.Add(inputField.text, "Notification");
+        }
 
-    // Pause
-    public void Pause()
-    {
-        Time.timeScale = Time.timeScale > 0 ? 0 : 1;
+        /// <summary>
+        /// Add loading success.
+        /// </summary>
+        public async void AddLoading(Slider slider)
+        {
+            var eventLog = EventLog.AddLoading("Loading...");
+            await Task.Delay((int)(slider.value * 1000));
+            eventLog.Done("Success");
+        }
+
+        /// <summary>
+        /// Add loading error.
+        /// </summary>
+        public async void AddLoadingError(Slider slider)
+        {
+            var eventLog = EventLog.AddLoading("Loading...");
+            await Task.Delay((int)(slider.value * 1000));
+            eventLog.Error("Failed: error message here");
+        }
     }
 }

@@ -8,8 +8,11 @@ namespace EventLogListView
 {
     public class EventLog : MonoBehaviour
     {
-        // singleton
         private static EventLog _Instance = null;
+
+        /// <summary>
+        /// Initialize singleton.
+        /// </summary>
         public static EventLog Instance {
             get {
                 if (_Instance == null) {
@@ -18,7 +21,7 @@ namespace EventLogListView
                     {
                         var obj = new GameObject(typeof(EventLog).Name);
                         _Instance = obj.AddComponent<EventLog>();
-                        _Instance.OnInit();
+                        _Instance.OnCreateInstance();
                         DontDestroyOnLoad(obj);
                     }
                 }
@@ -27,7 +30,7 @@ namespace EventLogListView
         }
 
         /// <summary>
-        /// Initialize EventLogListView after the scene has loaded.
+        /// Initialize EventLog after the scene has loaded.
         /// </summary>
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         public static void OnLoad()
@@ -35,22 +38,26 @@ namespace EventLogListView
             _ = EventLog.Instance;
         }
 
-        private Font defalutFont;
-        private List<ItemData> reserved = new List<ItemData>();
-        private ScrollRect scrollRect;
         private EventLogData data;
+        private ScrollRect scrollRect;
+        private List<ItemData> reservedItems = new List<ItemData>();
 
-        protected void OnInit()
+        /// <summary>
+        /// Processing at the time of instance creation.
+        /// </summary>
+        private void OnCreateInstance()
         {
-            var prefab = Resources.Load<GameObject>("Prefabs/EventLogCanvas");
-            var obj = Instantiate(prefab);
-            obj.transform.SetParent(transform);
-            scrollRect = obj.GetComponentInChildren<ScrollRect>();
-
             data = Resources.Load<EventLogData>("EventLogData");
+
+            var prefab = Resources.Load<GameObject>("Prefabs/EventLogCanvas");
+            var obj = Instantiate(prefab, transform);
+            scrollRect = obj.GetComponentInChildren<ScrollRect>();
         }
 
-        protected void OnDestroy()
+        /// <summary>
+        /// Break the connection between item and data when the instance is destroyed.
+        /// </summary>
+        private void OnDestroy()
         {
             foreach (Transform t in scrollRect.content)
             {
@@ -58,88 +65,94 @@ namespace EventLogListView
             }
         }
 
-        // Update is called once per frame
+        /// <summary>
+        /// Update is called once per frame.
+        /// </summary>
         void Update()
         {
-            if (reserved.Count == 0 || (Time.timeScale == 0 && data.updateMode != AnimatorUpdateMode.UnscaledTime))
-            {
-                return;
-            }
+            if (reservedItems.Count == 0) return;
+            if (Time.timeScale == 0 && data.updateMode != AnimatorUpdateMode.UnscaledTime) return;
 
-            var logData = reserved[0];
-            reserved.RemoveAt(0);
-
+            // object pooling
             var obj = scrollRect.content.childCount > 0
                 ? scrollRect.content.GetChild(0).gameObject
                 : null;
             if (obj != null && obj.activeSelf)
             {
+                // check object limit
                 if (scrollRect.content.childCount < data.itemLimit)
                 {
+                    // if the number of objects does not exceed the upper limit, create a new one
                     obj = null;
                 }
                 else
                 {
+                    // reuse the oldest object if the number of objects exceeds the limit
                     obj.SetActive(false);
                 }
             }
+
             if (obj != null)
             {
+                // reuse object
                 obj.SetActive(true);
                 obj.transform.SetAsLastSibling();
             }
             else
             {
+                // create a new object
                 var prefab = Resources.Load<GameObject>("Prefabs/EventLogItem");
                 obj = Instantiate(prefab, scrollRect.content);
             }
+
+            // initialize ItemView
             var item = obj.GetComponent<ItemView>();
             item.animator.updateMode = data.updateMode;
-            item.Init(logData);
-            item.UpdateContent();
+            item.Init(reservedItems[0]);
+            reservedItems.RemoveAt(0);
         }
 
-        // add
-        public void AddEventLog(ItemData logData)
+        /// <summary>
+        /// Add event log.
+        /// </summary>
+        private ItemData AddEventLog(string message, string key, bool done)
         {
-            reserved.Add(logData);
+            var e = new ItemData(data, message, key, done);
+            reservedItems.Add(e);
+            e.DebugLog();
+            return e;
         }
 
-        // add
-        public static void Add(string message)
+        /// <summary>
+        /// Add normal event log.
+        /// </summary>
+        public static void Add(string message, string key = "Default")
         {
-            Instance.AddEventLog(new ItemData(Instance.data, message, "Default"));
-            if (Instance.data.enableDebugLog) Debug.Log(message);
+            _ = Instance.AddEventLog(message, key, true);
         }
 
-        // add success
-        public static void Success(string message)
+        /// <summary>
+        /// Add done event log.
+        /// </summary>
+        public static void AddDone(string message)
         {
-            Instance.AddEventLog(new ItemData(Instance.data, message, "Done"));
-            if (Instance.data.enableDebugLog) Debug.Log(message);
+            EventLog.Add(message, "Done");
         }
 
-        // add error
-        public static void Error(string message)
+        /// <summary>
+        /// Add error event log.
+        /// </summary>
+        public static void AddError(string message)
         {
-            Instance.AddEventLog(new ItemData(Instance.data, message, "Error"));
-            if (Instance.data.enableDebugLog) Debug.LogError(message);
+            EventLog.Add(message, "Error");
         }
 
-        // add notification
-        public static void Notification(string message)
-        {
-            Instance.AddEventLog(new ItemData(Instance.data, message, "Notification"));
-            if (Instance.data.enableDebugLog) Debug.Log(message);
-        }
-
-        // add loading event
+        /// <summary>
+        /// Add loading event log.
+        /// </summary>
         public static ItemData AddLoading(string message)
         {
-            var e = new ItemData(Instance.data, message, "Done", false);
-            Instance.AddEventLog(e);
-            if (Instance.data.enableDebugLog) Debug.Log(message);
-            return e;
+            return Instance.AddEventLog(message, "Loading", false);
         }
     }
 }

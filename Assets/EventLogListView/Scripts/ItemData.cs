@@ -10,79 +10,86 @@ namespace EventLogListView
         private EventLogData data;
         public ItemView item;
         public string message;
-        public string typeKey;
+        public string key;
         public bool done;
         public bool error;
 
-        public ItemData(EventLogData data, string message, string typeKey, bool done = true)
+        /// <summary>
+        /// Constructor.
+        /// </summary>
+        public ItemData(EventLogData data, string message, string key, bool done = true)
         {
             this.data = data;
             this.message = message;
-            this.typeKey = typeKey;
+            this.key = key;
             this.done = done;
-            error = false;
+            error = key == "Error";
         }
 
-        // loading complete
-        public ViewType GetViewType()
+        /// <summary>
+        /// Get ViewType data.
+        /// </summary>
+        public EventLogData.ViewType GetViewType()
         {
-            if (done) return data.Get(typeKey);
+            if (done) return data.Get(key);
             if (error) return data.Get("Error");
             return data.Get("Loading");
         }
 
-        // loading complete
-        public void Done()
+        /// <summary>
+        /// Output debug string to console.
+        /// </summary>
+        public void DebugLog()
         {
-            done = true;
-            item?.UpdateContent();
+            if (data.enableDebugLog)
+            {
+                if (error)
+                {
+                    Debug.LogError(message);
+                }
+                else
+                {
+                    Debug.Log(message);
+                }
+            }
         }
 
-        // loading complete and add message
-        public void Done(string appendMessage)
+        /// <summary>
+        /// Loading complete and add message.
+        /// </summary>
+        public void Done(string appendMessage = "")
         {
             message += appendMessage;
-            if (data.enableDebugLog) Debug.Log(message);
+            DebugLog();
             done = true;
             item?.UpdateContent();
             item?.UpdateLayout();
         }
 
-        // loading complete with delay
-        public async void DelayDone(int t)
-        {
-            await Task.Delay(t);
-            Done();
-        }
-
-        // loading complete with delay
-        public async void DelayDone(int t, string appendMessage)
+        /// <summary>
+        /// Loading complete with delay and add message.
+        /// </summary>
+        public async void DelayDone(int t, string appendMessage = "")
         {
             await Task.Delay(t);
             Done(appendMessage);
         }
 
-        // loading complete with error
-        public void Failed()
+        /// <summary>
+        /// Loading complete with error and add message.
+        /// </summary>
+        public void Error(Exception e)
         {
-            error = true;
-            item?.UpdateContent();
+            Error(": " + e.Message);
         }
 
-        // loading complete with error and add message
-        public void Failed(Exception e)
+        /// <summary>
+        /// Loading complete with error and add message.
+        /// </summary>
+        public void Error(string appendMessage = "")
         {
-            Failed(": " + e.Message);
-        }
-
-        // loading complete with error and add message
-        public void Failed(string appendMessage)
-        {
-            message += appendMessage;
-            if (data.enableDebugLog) Debug.LogError(message);
             error = true;
-            item?.UpdateContent();
-            item?.UpdateLayout();
+            Done(appendMessage);
         }
     }
 }

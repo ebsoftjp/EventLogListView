@@ -17,12 +17,17 @@ namespace EventLogListView
         private ItemData itemData;
         private float offsetHeight;
 
+        /// <summary>
+        /// Save view size offset.
+        /// </summary>
         void Awake()
         {
             offsetHeight = rectTransform.sizeDelta.y - text.fontSize;
         }
 
-        // init
+        /// <summary>
+        /// Initialize view.
+        /// </summary>
         public void Init(ItemData newItemData)
         {
             Detach();
@@ -30,11 +35,18 @@ namespace EventLogListView
             // data attach
             itemData = newItemData;
             itemData.item = this;
+            UpdateContent();
         }
 
-        // update
+        /// <summary>
+        /// Update content.
+        /// </summary>
         public void UpdateContent()
         {
+            // text message
+            text.text = itemData.message;
+
+            // view color and icon image
             var viewType = itemData.GetViewType();
             if (viewType != null)
             {
@@ -45,10 +57,11 @@ namespace EventLogListView
             else
             {
                 text.color = Color.white;
+                icon.enabled = false;
                 icon.sprite = null;
             }
 
-            text.text = itemData.message;
+            // animator parameter
             if (itemData.done || itemData.error)
             {
                 animator.SetTrigger("IconDone");
@@ -68,7 +81,9 @@ namespace EventLogListView
                 textRectTransform.sizeDelta.y + offsetHeight);
         }
 
-        // update layout
+        /// <summary>
+        /// Update layout.
+        /// </summary>
         public void UpdateLayout()
         {
             var layoutGroup = GetComponentInParent<VerticalLayoutGroup>();
@@ -76,15 +91,21 @@ namespace EventLogListView
             layoutGroup.enabled = true;
         }
 
-        // call from animation 'EventLogDisappear'
+        /// <summary>
+        /// Call from animation 'EventLogDisappear'.
+        /// </summary>
         public void DestroySelf()
         {
             Detach();
+
+            // for object pooling
             gameObject.SetActive(false);
             transform.SetAsFirstSibling();
         }
 
-        // data detach
+        /// <summary>
+        /// Detach ItemData.
+        /// </summary>
         public void Detach()
         {
             if (itemData != null)
