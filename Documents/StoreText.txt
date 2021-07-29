@@ -1,0 +1,73 @@
+# EventLogListView
+
+---
+
+## Category
+
+2D/GUI
+
+---
+
+## Release version
+
+1.0
+
+---
+
+## Package upload
+
+2019.3.1f1
+Built-in
+No
+
+---
+
+## Changelog
+
+First release
+
+---
+
+## Technical details
+
+The character string is displayed while being animated in a list format.
+
+You can use it in various ways, such as displaying an event that occurred in the game as a message or displaying a debugging message.
+
+---
+
+## Selected category
+
+2D
+
+---
+
+## Price
+
+Free asset
+
+---
+
+## keyword
+
+event
+log
+list
+UI
+icons
+GUI
+2D
+
+---
+
+## Public links
+
+https://assetstore.unity.com/packages/slug/200842
+https://u3d.as/2EEP
+
+---
+
+## Media
+
+https://www.youtube.com/watch?v=Hhalsuz94TQ
+https://youtu.be/Hhalsuz94TQ
