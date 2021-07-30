@@ -1,0 +1,9 @@
+--
+
+2021/07/30
+
+Reason(s)
+
+Asset Store is following the Unity Editor's LTS cycle. New assets need to be uploaded from the earliest LTS being 2019.4 LTS. Existing assets can remain on the store as is, but updates must be uploaded from 2018.4 versions or more recent. This means that updates to assets will not be accepted from Unity 2018.3 and older.
+
+--
