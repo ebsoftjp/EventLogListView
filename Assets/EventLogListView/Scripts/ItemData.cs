@@ -12,6 +12,7 @@ namespace EventLogListView
 
         private EventLogData data;
         private string key;
+        private DateTime time;
 
         /// <summary>
         /// Check loading.
@@ -28,6 +29,7 @@ namespace EventLogListView
             this.data = data;
             this.message = message;
             this.key = key;
+            time = DateTime.Now;
         }
 
         /// <summary>
@@ -74,6 +76,15 @@ namespace EventLogListView
         {
             key = data.doneKey;
             UpdateItem(appendMessage);
+        }
+
+        /// <summary>
+        /// Loading complete and add message with time.
+        /// </summary>
+        public void DoneWithTime(string appendMessage = "")
+        {
+            key = data.doneKey;
+            UpdateItem(appendMessage + $" ({Mathf.Round((float)(DateTime.Now - time).TotalSeconds * 100) / 100}s)");
         }
 
         /// <summary>

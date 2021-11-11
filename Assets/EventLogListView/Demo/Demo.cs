@@ -88,7 +88,7 @@ namespace EventLogListView
         {
             var eventLog = EventLog.AddLoading("Loading...");
             await Task.Delay((int)(slider.value * 1000));
-            eventLog.Done("Success");
+            eventLog.DoneWithTime("Success");
         }
 
         /// <summary>
