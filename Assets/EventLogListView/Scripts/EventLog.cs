@@ -9,6 +9,7 @@ namespace EventLogListView
     public class EventLog : MonoBehaviour
     {
         private static EventLog _Instance = null;
+        private static bool _DestroyDone = false;
         private static readonly string dataPath = "EventLogListView/EventLogData";
         private static readonly string canvasPath = "EventLogListView/Prefabs/EventLogCanvas";
         private static readonly string itemPath = "EventLogListView/Prefabs/EventLogItem";
@@ -18,7 +19,7 @@ namespace EventLogListView
         /// </summary>
         public static EventLog Instance {
             get {
-                if (_Instance == null) {
+                if (_Instance == null && !_DestroyDone) {
                     _Instance = FindObjectOfType(typeof(EventLog)) as EventLog;
                     if (_Instance == null)
                     {
@@ -38,7 +39,7 @@ namespace EventLogListView
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         public static void OnLoad()
         {
-            _ = EventLog.Instance;
+            _ = Instance;
         }
 
         private EventLogData data;
@@ -62,6 +63,8 @@ namespace EventLogListView
         /// </summary>
         private void OnDestroy()
         {
+            _DestroyDone = true;
+            _Instance = null;
             foreach (Transform t in scrollRect.content)
             {
                 t.GetComponent<ItemView>()?.Detach();
@@ -73,6 +76,7 @@ namespace EventLogListView
         /// </summary>
         void Update()
         {
+            if (_DestroyDone) return;
             if (reservedItems.Count == 0) return;
             if (Time.timeScale == 0 && data.updateMode != AnimatorUpdateMode.UnscaledTime) return;
 
@@ -135,6 +139,7 @@ namespace EventLogListView
         /// </summary>
         public static void Add(string message, string key = "")
         {
+            if (_DestroyDone) return;
             _ = Instance.AddEventLog(message, key);
         }
 
@@ -143,7 +148,8 @@ namespace EventLogListView
         /// </summary>
         public static void AddDone(string message)
         {
-            EventLog.Add(message, Instance.data.doneKey);
+            if (_DestroyDone) return;
+            Add(message, Instance.data.doneKey);
         }
 
         /// <summary>
@@ -151,7 +157,8 @@ namespace EventLogListView
         /// </summary>
         public static void AddError(string message)
         {
-            EventLog.Add(message, Instance.data.errorKey);
+            if (_DestroyDone) return;
+            Add(message, Instance.data.errorKey);
         }
 
         /// <summary>
@@ -159,6 +166,7 @@ namespace EventLogListView
         /// </summary>
         public static ItemData AddLoading(string message)
         {
+            if (_DestroyDone) return null;
             return Instance.AddEventLog(message, Instance.data.loadingKey);
         }
     }
