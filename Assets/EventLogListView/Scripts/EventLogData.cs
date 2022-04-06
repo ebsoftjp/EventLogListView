@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using UnityEngine;
 
 namespace EventLogListView
@@ -10,13 +10,13 @@ namespace EventLogListView
         public AnimatorUpdateMode updateMode = AnimatorUpdateMode.UnscaledTime;
         public float itemLimit = 32;
 
-        [SerializeField, HeaderAttribute("Keys")]
+        [Header("Keys")]
         public string defaultKey = "Default";
         public string doneKey = "Done";
         public string errorKey = "Error";
         public string loadingKey = "Loading";
 
-        [SerializeField, HeaderAttribute("View type list")]
+        [Header("View type list")]
         public ViewType[] list;
 
         /// <summary>
